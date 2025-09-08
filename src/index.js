@@ -7,7 +7,10 @@ import { saveProjects, loadProjects } from "./modules/storage.js";
 // Loads or create default project
 let projects = loadProjects();
 if (projects.length === 0) {
-  projects.push(new Project("Default"));
+  const defaultProjects = ["Default", "Work", "Personal"].map(
+    (name) => new Project(name)
+  );
+  projects.push(...defaultProjects);
   saveProjects(projects);
 }
 
