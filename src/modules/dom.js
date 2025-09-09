@@ -16,7 +16,25 @@ export function renderProjects(projects) {
       const li = document.createElement("li");
       li.textContent = `${todo.title} (due: ${todo.dueDate})`;
       li.dataset.index = index;
+  
+      li.addEventListener("click", () => {
+        showTodoDetail(todo);
+      });
+  
       todoList.appendChild(li);
     });
+  }
+  
+  function showTodoDetail(todo) {
+    const detailDiv = document.getElementById("todo-detail");
+    detailDiv.classList.remove("hidden");
+  
+    detailDiv.innerHTML = `
+      <h3>${todo.title}</h3>
+      <p><strong>Description:</strong> ${todo.description}</p>
+      <p><strong>Due:</strong> ${todo.dueDate}</p>
+      <p><strong>Priority:</strong> ${todo.priority}</p>
+      <p><strong>Status:</strong> ${todo.completed ? "Done ✅" : "Pending ⏳"}</p>
+    `;
   }
   

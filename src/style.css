@@ -24,6 +24,10 @@ body {
   flex: 1;
 }
 
+.hidden {
+  display: none;
+}
+
 #todo-detail {
   margin-top: 1rem;
   padding: 1rem;
