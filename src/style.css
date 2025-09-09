@@ -14,12 +14,18 @@ body {
   border-right: 2px solid #ccc;
 }
 
-#todo-view {
+#main{
+  display: flex;
+  flex-direction: column;
   padding: 1rem;
 }
 
+#todo-view {
+  flex: 1;
+}
+
 #todo-detail {
-  margin-top: 2rem;
+  margin-top: 1rem;
   padding: 1rem;
   background: #ffffff;
   border: 1px solid #ccc;
