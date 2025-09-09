@@ -30,3 +30,30 @@ renderProjects(projects);
 
 //Render first project’s todos immediately
 renderTodos(projects[0]);
+
+// Add project button
+document.getElementById("add-project").addEventListener("click", () => {
+  const name = prompt("Enter new project name:");
+  if (name) {
+    const newProject = new Project(name);
+    projects.push(newProject);
+    saveProjects(projects);
+    renderProjects(projects);
+  }
+});
+
+// Add todo button
+document.getElementById("add-todo").addEventListener("click", () => {
+  const activeProject = projects[0]; // 👈 for now, default project only
+  const title = prompt("Todo title?");
+  const desc = prompt("Todo description?");
+  const due = prompt("Due date (YYYY-MM-DD)?");
+  const priority = prompt("Priority (low/medium/high)?");
+
+  if (title) {
+    const newTodo = new Todo(title, desc, due, priority, false);
+    activeProject.addTodo(newTodo);
+    saveProjects(projects);
+    renderTodos(activeProject);
+  }
+});
