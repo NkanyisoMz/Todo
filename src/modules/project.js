@@ -16,4 +16,4 @@ class Project {
       return this.todos;
     }
   }
-  
+  export { Project };

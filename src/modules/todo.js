@@ -11,4 +11,4 @@ class Todo {
       this.completed = !this.completed;
     }
   }
-  
+  export { Todo };
