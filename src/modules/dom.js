@@ -1,19 +1,21 @@
-export function renderProjects(projects) {
-    const projectList = document.getElementById("project-list");
-    projectList.innerHTML = "";
+export function renderProjects(projects, onSelect) {
+  const projectList = document.getElementById("project-list");
+  projectList.innerHTML = "";
 
-    projects.forEach((project, index) => {
-      const li = document.createElement("li");
-      li.textContent = project.name;
-      li.dataset.index = index;
+  projects.forEach((project, index) => {
+    const li = document.createElement("li");
+    const btn = document.createElement("button");
+    btn.textContent = project.name;
+    btn.dataset.index = index;
 
-      li.addEventListener("click", () => {
-        renderTodos(project);
-      });
+    btn.addEventListener("click", () => onSelect(index));
 
-      projectList.appendChild(li);
-    });
-  }
+    li.appendChild(btn);
+    projectList.appendChild(li);
+  });
+}
+
+
   
   export function renderTodos(project) {
     const todoList = document.getElementById("todo-list");

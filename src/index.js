@@ -6,6 +6,8 @@ import { saveProjects, loadProjects } from "./modules/storage.js";
 
 // Loads or create default project
 let projects = loadProjects();
+let activeProjectIndex = 0;
+
 if (projects.length === 0) {
   const defaultProjects = new Project("Default");
 
@@ -44,7 +46,9 @@ document.getElementById("add-project").addEventListener("click", () => {
 
 // Add todo button
 document.getElementById("add-todo").addEventListener("click", () => {
-  const activeProject = projects[0]; // 👈 for now, default project only
+  const activeProject = projects[activeProjectIndex];
+  if (!activeProject) return;
+
   const title = prompt("Todo title?");
   const desc = prompt("Todo description?");
   const due = prompt("Due date (YYYY-MM-DD)?");
@@ -57,3 +61,11 @@ document.getElementById("add-todo").addEventListener("click", () => {
     renderTodos(activeProject);
   }
 });
+
+function setActiveProject(index) {
+  activeProjectIndex = index;
+  renderTodos(projects[activeProjectIndex]);
+}
+
+renderProjects(projects, setActiveProject);
+renderTodos(projects[activeProjectIndex]);
