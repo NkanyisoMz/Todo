@@ -7,21 +7,60 @@
 </head>
 <body>
     <div id="sidebar">
-      <button id="add-project">+ Project</button>
-      <ul id="project-list"></ul>
+  <h2>Projects</h2>
+  <ul id="project-list"></ul>
+  <button id="add-project">+ Add Project</button>
+</div>
+
+<div id="main">
+  <h2>Todos</h2>
+  <ul id="todo-list"></ul>
+</div>
+
+<!-- === MODALS === -->
+<div id="overlay" class="overlay"></div>
+
+<!-- Project Modal -->
+<div id="project-modal" class="modal">
+  <form id="project-form">
+    <h3>Add/Edit Project</h3>
+    <input type="text" name="projectName" placeholder="Project Name" required />
+    <div class="actions">
+      <button type="submit">Save</button>
+      <button type="button" class="cancel">Cancel</button>
     </div>
-  
-    <div id="main">
-        <div id="todo-view">
-            <button id="add-todo">+ Todo</button>
-            <ul id="todo-list"></ul>
-          </div>
-        
-          <div id="todo-detail" class="hidden">
-            <p>Select todo to view details</p>
-          </div>
+  </form>
+</div>
+
+<!-- Todo Modal -->
+<div id="todo-modal" class="modal">
+  <form id="todo-form">
+    <h3>Add/Edit Todo</h3>
+    <input type="text" name="title" placeholder="Todo Title" required />
+    <textarea name="description" placeholder="Description"></textarea>
+    <input type="date" name="dueDate" />
+    <select name="priority">
+      <option>Low</option>
+      <option>Medium</option>
+      <option>High</option>
+    </select>
+    <div class="actions">
+      <button type="submit">Save</button>
+      <button type="button" class="cancel">Cancel</button>
     </div>
-    
+  </form>
+</div>
+
+<!-- Todo Details Modal -->
+<div id="todo-detail-modal" class="modal">
+  <div id="todo-detail-content"></div>
+  <div class="actions">
+    <button id="edit-todo">✏️ Edit</button>
+    <button id="delete-todo">🗑️ Delete</button>
+    <button id="close-todo-detail">❌ Close</button>
+  </div>
+</div>
+
   </body>
   
 </html>
