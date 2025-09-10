@@ -62,10 +62,65 @@ document.getElementById("add-todo").addEventListener("click", () => {
   }
 });
 
+
 function setActiveProject(index) {
   activeProjectIndex = index;
-  renderTodos(projects[activeProjectIndex], showTodoDetail);
+  renderTodos(
+    projects[activeProjectIndex],
+    showTodoDetail,
+    editTodo,
+    deleteTodo
+  );
 }
 
-renderProjects(projects, setActiveProject);
-renderTodos(projects[activeProjectIndex], showTodoDetail);
+function editProject(index) {
+  const newName = prompt("Enter new project name:", projects[index].name);
+  if (newName) {
+    projects[index].name = newName;
+    saveProjects(projects);
+    renderProjects(projects, setActiveProject, editProject, deleteProject);
+  }
+}
+
+function deleteProject(index) {
+  if (confirm("Are you sure you want to delete this project?")) {
+    projects.splice(index, 1);
+    if (activeProjectIndex >= projects.length) activeProjectIndex = 0;
+    saveProjects(projects);
+    renderProjects(projects, setActiveProject, editProject, deleteProject);
+    if (projects.length > 0) {
+      renderTodos(projects[activeProjectIndex], showTodoDetail, editTodo, deleteTodo);
+    }
+  }
+}
+
+function editTodo(index) {
+  const project = projects[activeProjectIndex];
+  const todo = project.getTodos()[index];
+
+  const newTitle = prompt("Edit title:", todo.title);
+  const newDesc = prompt("Edit description:", todo.description);
+  const newDue = prompt("Edit due date:", todo.dueDate);
+  const newPriority = prompt("Edit priority (low/medium/high):", todo.priority);
+
+  todo.title = newTitle || todo.title;
+  todo.description = newDesc || todo.description;
+  todo.dueDate = newDue || todo.dueDate;
+  todo.priority = newPriority || todo.priority;
+
+  saveProjects(projects);
+  renderTodos(project, showTodoDetail, editTodo, deleteTodo);
+}
+
+function deleteTodo(index) {
+  const project = projects[activeProjectIndex];
+  if (confirm("Delete this todo?")) {
+    project.todos.splice(index, 1);
+    saveProjects(projects);
+    renderTodos(project, showTodoDetail, editTodo, deleteTodo);
+  }
+}
+
+// Initial render
+renderProjects(projects, setActiveProject, editProject, deleteProject);
+renderTodos(projects[activeProjectIndex], showTodoDetail, editTodo, deleteTodo);
