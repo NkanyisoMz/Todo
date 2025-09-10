@@ -1,7 +1,7 @@
 import "./style.css";
 import {Project} from "./modules/project.js";
 import {Todo} from "./modules/todo.js";
-import { renderProjects, renderTodos } from "./modules/dom.js";
+import { renderProjects, renderTodos, showTodoDetail  } from "./modules/dom.js";
 import { saveProjects, loadProjects } from "./modules/storage.js";
 
 // Loads or create default project
@@ -64,8 +64,8 @@ document.getElementById("add-todo").addEventListener("click", () => {
 
 function setActiveProject(index) {
   activeProjectIndex = index;
-  renderTodos(projects[activeProjectIndex]);
+  renderTodos(projects[activeProjectIndex], showTodoDetail);
 }
 
 renderProjects(projects, setActiveProject);
-renderTodos(projects[activeProjectIndex]);
+renderTodos(projects[activeProjectIndex], showTodoDetail);
