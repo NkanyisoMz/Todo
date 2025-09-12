@@ -13,7 +13,7 @@ export function renderProjects(projects, onSelect, onEdit, onDelete) {
     const editBtn = document.createElement("button");
     editBtn.textContent = "✏️";
     editBtn.addEventListener("click", (e) => {
-      e.stopPropagation(); // don’t also trigger select
+      e.stopPropagation();
       onEdit(index);
     });
 
@@ -32,8 +32,6 @@ export function renderProjects(projects, onSelect, onEdit, onDelete) {
   });
 }
 
-
-  
 export function renderTodos(project, onSelect, onEdit, onDelete) {
   const todoList = document.getElementById("todo-list");
   todoList.innerHTML = "";
@@ -66,28 +64,45 @@ export function renderTodos(project, onSelect, onEdit, onDelete) {
     todoList.appendChild(li);
   });
 }
-  
-export function showTodoDetail(todo) {
-    const detailDiv = document.getElementById("todo-detail");
-    detailDiv.classList.remove("hidden");
-  
-    detailDiv.innerHTML = `
-      <h3>${todo.title}</h3>
-      <p><strong>Description:</strong> ${todo.description}</p>
-      <p><strong>Due:</strong> ${todo.dueDate}</p>
-      <p><strong>Priority:</strong> ${todo.priority}</p>
-      <p><strong>Status:</strong> ${todo.completed ? "Done ✅" : "Pending ⏳"}</p>
-      <button id="close-detail">Close</button>
-    `;
 
-
-  document.getElementById("close-detail").addEventListener("click", hideTodoDetail);
-  }
-
-  export function hideTodoDetail() {
+export function hideTodoDetail() {
   const detailDiv = document.getElementById("todo-detail");
-  detailDiv.classList.add("hidden");
-  detailDiv.innerHTML = ""; // clear content
+  if (detailDiv) {
+    detailDiv.classList.add("hidden");
+    detailDiv.innerHTML = "";
+  }
 }
 
-  
+const overlay = document.getElementById("overlay");
+const projectModal = document.getElementById("project-modal");
+const todoModal = document.getElementById("todo-modal");
+const todoDetailModal = document.getElementById("todo-detail-modal");
+const todoDetailContent = document.getElementById("todo-detail-content");
+
+export const hideModals = () => {
+  overlay.style.display = "none";
+  projectModal.style.display = "none";
+  todoModal.style.display = "none";
+  todoDetailModal.style.display = "none";
+};
+
+export const showModal = (modal) => {
+  overlay.style.display = "block";
+  modal.style.display = "block";
+};
+
+// ✅ Cleaned up: receives todo + callbacks
+export function showTodoDetails(todo, onEdit, onDelete) {
+  todoDetailContent.innerHTML = `
+    <h3>${todo.title}</h3>
+    <p>${todo.description || ""}</p>
+    <p><strong>Due:</strong> ${todo.dueDate || "N/A"}</p>
+    <p><strong>Priority:</strong> ${todo.priority || "Low"}</p>
+  `;
+
+  showModal(todoDetailModal);
+
+  document.getElementById("edit-todo").onclick = onEdit;
+  document.getElementById("delete-todo").onclick = onDelete;
+  document.getElementById("close-todo-detail").onclick = hideModals;
+}
