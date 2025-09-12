@@ -45,31 +45,36 @@ export function renderTodos(project, onSelect, onEdit, onDelete) {
     const li = document.createElement("li");
 
     const btn = document.createElement("button");
-    btn.textContent = `${todo.title} (due: ${todo.dueDate})`;
+    btn.textContent = `${todo.title} (Due: ${todo.dueDate || "N/A"})`;
     btn.addEventListener("click", () => onSelect(todo, index));
 
+    const actionsDiv = document.createElement("div");
+    actionsDiv.classList.add("actions");
+
     const editBtn = document.createElement("button");
-    editBtn.textContent = "✏️";
+    editBtn.textContent = "Edit";
+    editBtn.classList.add("edit-btn");
     editBtn.addEventListener("click", (e) => {
       e.stopPropagation();
       onEdit(index);
     });
 
     const deleteBtn = document.createElement("button");
-    deleteBtn.textContent = "🗑️";
+    deleteBtn.textContent = "Delete";
+    deleteBtn.classList.add("delete-btn");
     deleteBtn.addEventListener("click", (e) => {
       e.stopPropagation();
       onDelete(index);
     });
 
-    li.appendChild(btn);
-    li.appendChild(editBtn);
-    li.appendChild(deleteBtn);
+    actionsDiv.appendChild(editBtn);
+    actionsDiv.appendChild(deleteBtn);
 
+    li.appendChild(btn);
+    li.appendChild(actionsDiv);
     todoList.appendChild(li);
   });
 }
-
 export function hideTodoDetail() {
   const detailDiv = document.getElementById("todo-detail");
   if (detailDiv) {
