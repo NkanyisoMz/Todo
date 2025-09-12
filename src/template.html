@@ -1,58 +1,67 @@
-<div id="sidebar">
-  <h2>Projects</h2>
-  <ul id="project-list"></ul>
-  <button id="add-project">+ Add Project</button>
-</div>
-
-<div id="main">
-  <h2>Todos</h2>
-  <button id="add-todo">+ Add Todo</button>
-  <ul id="todo-list"></ul>
-  
-</div>
-
-<!-- === MODALS === -->
-<div id="overlay" class="overlay"></div>
-
-<!-- Project Modal -->
-<div id="project-modal" class="modal">
-  <form id="project-form">
-    <h3>Add/Edit Project</h3>
-    <input type="text" name="projectName" placeholder="Project Name" required />
-    <div class="actions">
-      <button type="submit">Save</button>
-      <button type="button" class="cancel">Cancel</button>
-    </div>
-  </form>
-</div>
-
-<!-- Todo Modal -->
-<div id="todo-modal" class="modal">
-  <form id="todo-form">
-    <h3>Add/Edit Todo</h3>
-    <input type="text" name="title" placeholder="Todo Title" required />
-    <textarea name="description" placeholder="Description"></textarea>
-    <input type="date" name="dueDate" />
-    <select name="priority">
-      <option>Low</option>
-      <option>Medium</option>
-      <option>High</option>
-    </select>
-    <div class="actions">
-      <button type="submit">Save</button>
-      <button type="button" class="cancel">Cancel</button>
-    </div>
-  </form>
-</div>
-
-<!-- Todo Details Modal -->
-<div id="todo-detail-modal" class="modal">
-  <div id="todo-detail-content"></div>
-  <div class="actions">
-    <button id="edit-todo">✏️ Edit</button>
-    <button id="delete-todo">🗑️ Delete</button>
-    <button id="close-todo-detail">❌ Close</button>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Todo App</title>
+</head>
+<body>
+  <div id="sidebar">
+    <h2>Projects</h2>
+    <ul id="project-list"></ul>
+    <button id="add-project">+ Add Project</button>
   </div>
-</div>
 
-<script defer src="main.js"></script> 
+  <div id="main">
+    <h2>Todos</h2>
+    <button id="add-todo">+ Add Todo</button>
+    <ul id="todo-list"></ul>
+  </div>
+
+  <!-- === MODALS === -->
+  <div id="overlay" class="overlay"></div>
+
+  <!-- Project Modal -->
+  <div id="project-modal" class="modal">
+    <form id="project-form">
+      <h3>Add/Edit Project</h3>
+      <input type="text" name="projectName" placeholder="Project Name" required />
+      <div class="actions">
+        <button type="submit">Save</button>
+        <button type="button" class="cancel">Cancel</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Todo Modal -->
+  <div id="todo-modal" class="modal">
+    <form id="todo-form">
+      <h3>Add/Edit Todo</h3>
+      <input type="text" name="title" placeholder="Todo Title" required />
+      <textarea name="description" placeholder="Description"></textarea>
+      <input type="date" name="dueDate" />
+      <select name="priority">
+        <option>Low</option>
+        <option>Medium</option>
+        <option>High</option>
+      </select>
+      <div class="actions">
+        <button type="submit">Save</button>
+        <button type="button" class="cancel">Cancel</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Todo Details Modal -->
+  <div id="todo-detail-modal" class="modal">
+    <div id="todo-detail-content"></div>
+    <div class="actions">
+      <button id="edit-todo">Edit</button>
+      <button id="delete-todo">Delete</button>
+      <button id="close-todo-detail">Close</button>
+    </div>
+  </div>
+
+  <script src="main.js"></script> <!-- Adjust based on Webpack output -->
+</body>
+</html>

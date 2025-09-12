@@ -1,5 +1,9 @@
+import { Project } from "./project.js";
+import { Todo } from "./todo.js";
+
 export function renderProjects(projects, onSelect, onEdit, onDelete) {
   const projectList = document.getElementById("project-list");
+  if (!projectList) console.error("Element #project-list not found");
   projectList.innerHTML = "";
 
   projects.forEach((project, index) => {
@@ -37,8 +41,10 @@ export function renderProjects(projects, onSelect, onEdit, onDelete) {
     projectList.appendChild(li);
   });
 }
+
 export function renderTodos(project, onSelect, onEdit, onDelete) {
   const todoList = document.getElementById("todo-list");
+  if (!todoList) console.error("Element #todo-list not found");
   todoList.innerHTML = "";
 
   project.getTodos().forEach((todo, index) => {
@@ -75,6 +81,7 @@ export function renderTodos(project, onSelect, onEdit, onDelete) {
     todoList.appendChild(li);
   });
 }
+
 export function hideTodoDetail() {
   const detailDiv = document.getElementById("todo-detail");
   if (detailDiv) {
@@ -101,7 +108,6 @@ export const showModal = (modal) => {
   modal.style.display = "block";
 };
 
-// ✅ Cleaned up: receives todo + callbacks
 export function showTodoDetails(todo, onEdit, onDelete) {
   todoDetailContent.innerHTML = `
     <h3>${todo.title}</h3>
@@ -117,7 +123,7 @@ export function showTodoDetails(todo, onEdit, onDelete) {
   document.getElementById("close-todo-detail").onclick = hideModals;
 }
 
-export function showProjectModal(mode, index, onSave) {
+export function showProjectModal(mode, index, projects, onSave) {
   const form = document.getElementById("project-form");
   const input = form.querySelector('input[name="projectName"]');
   const title = form.querySelector("h3");
@@ -141,7 +147,7 @@ export function showProjectModal(mode, index, onSave) {
   form.querySelector(".cancel").onclick = hideModals;
 }
 
-export function showTodoModal(mode, todoIndex, projectIndex, onSave) {
+export function showTodoModal(mode, todoIndex, projectIndex, projects, onSave) {
   const form = document.getElementById("todo-form");
   const titleInput = form.querySelector('input[name="title"]');
   const descInput = form.querySelector('textarea[name="description"]');

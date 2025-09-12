@@ -8,45 +8,74 @@ import { saveProjects, loadProjects } from "./modules/storage.js";
 let projects = loadProjects();
 let activeProjectIndex = 0;
 
-if (projects.length === 0) {
-  const defaultProject = new Project("Default");
-  defaultProject.addTodo(
-    new Todo("Buy milk", "Go to the store and get whole milk", "2025-09-10", "high", false)
-  );
-  defaultProject.addTodo(
-    new Todo("Study", "Finish Odin Project lesson on todos", "2025-09-12", "medium", false)
-  );
-  defaultProject.addTodo(
-    new Todo("Exercise", "30 min run in the park", "2025-09-13", "low", false)
-  );
-  projects.push(defaultProject);
-  saveProjects(projects);
-}
+document.addEventListener("DOMContentLoaded", () => {
+  console.log("Projects loaded:", projects); // Debug
 
-// Add project button
-document.getElementById("add-project").addEventListener("click", () => {
-  showProjectModal("add", null, (newProject) => {
-    projects.push(newProject);
+  // Create default project if none exist
+  if (projects.length === 0) {
+    const defaultProject = new Project("Default");
+    defaultProject.addTodo(
+      new Todo("Buy milk", "Go to the store and get whole milk", "2025-09-10", "high", false)
+    );
+    defaultProject.addTodo(
+      new Todo("Study", "Finish Odin Project lesson on todos", "2025-09-12", "medium", false)
+    );
+    defaultProject.addTodo(
+      new Todo("Exercise", "30 min run in the park", "2025-09-13", "low", false)
+    );
+    projects.push(defaultProject);
     saveProjects(projects);
-    renderProjects(projects, setActiveProject, editProject, deleteProject);
-  });
-});
+  }
 
-// Add todo button
-document.getElementById("add-todo").addEventListener("click", () => {
-  const activeProject = projects[activeProjectIndex];
-  if (!activeProject) return;
+  // Add project button
+  const addProjectBtn = document.getElementById("add-project");
+  if (addProjectBtn) {
+    addProjectBtn.addEventListener("click", () => {
+      showProjectModal("add", null, projects, (newProject) => {
+        projects.push(newProject);
+        saveProjects(projects);
+        renderProjects(projects, setActiveProject, editProject, deleteProject);
+      });
+    });
+  } else {
+    console.error("Element #add-project not found in DOM");
+  }
 
-  showTodoModal("add", null, activeProjectIndex, (newTodo) => {
-    activeProject.addTodo(newTodo);
-    saveProjects(projects);
+  // Add todo button
+  const addTodoBtn = document.getElementById("add-todo");
+  if (addTodoBtn) {
+    addTodoBtn.addEventListener("click", () => {
+      const activeProject = projects[activeProjectIndex];
+      if (!activeProject) return;
+
+      showTodoModal("add", null, activeProjectIndex, projects, (newTodo) => {
+        activeProject.addTodo(newTodo);
+        saveProjects(projects);
+        renderTodos(
+          activeProject,
+          (todo, tIndex) => showTodoDetails(todo, () => editTodo(tIndex), () => deleteTodo(tIndex)),
+          (tIndex) => editTodo(tIndex),
+          (tIndex) => deleteTodo(tIndex)
+        );
+      });
+    });
+  } else {
+    console.error("Element #add-todo not found in DOM");
+  }
+
+  // Initial render
+  console.log("Rendering initial projects and todos");
+  renderProjects(projects, setActiveProject, editProject, deleteProject);
+  if (projects.length > 0) {
     renderTodos(
-      activeProject,
+      projects[activeProjectIndex],
       (todo, tIndex) => showTodoDetails(todo, () => editTodo(tIndex), () => deleteTodo(tIndex)),
       (tIndex) => editTodo(tIndex),
       (tIndex) => deleteTodo(tIndex)
     );
-  });
+  } else {
+    document.getElementById("todo-list").innerHTML = "<p>No projects available. Add a project to start.</p>";
+  }
 });
 
 // --- Functions ---
@@ -62,7 +91,7 @@ function setActiveProject(index) {
 }
 
 function editProject(index) {
-  showProjectModal("edit", index, (updatedProject) => {
+  showProjectModal("edit", index, projects, (updatedProject) => {
     projects[index] = updatedProject;
     saveProjects(projects);
     renderProjects(projects, setActiveProject, editProject, deleteProject);
@@ -90,7 +119,7 @@ function deleteProject(index) {
 
 function editTodo(index) {
   const project = projects[activeProjectIndex];
-  showTodoModal("edit", index, activeProjectIndex, (updatedTodo) => {
+  showTodoModal("edit", index, activeProjectIndex, projects, (updatedTodo) => {
     project.getTodos()[index] = updatedTodo;
     saveProjects(projects);
     renderTodos(
@@ -114,17 +143,4 @@ function deleteTodo(index) {
       (tIndex) => deleteTodo(tIndex)
     );
   }
-}
-
-// Initial render
-renderProjects(projects, setActiveProject, editProject, deleteProject);
-if (projects.length > 0) {
-  renderTodos(
-    projects[activeProjectIndex],
-    (todo, tIndex) => showTodoDetails(todo, () => editTodo(tIndex), () => deleteTodo(tIndex)),
-    (tIndex) => editTodo(tIndex),
-    (tIndex) => deleteTodo(tIndex)
-  );
-} else {
-  document.getElementById("todo-list").innerHTML = "<p>No projects available. Add a project to start.</p>";
 }
