@@ -106,3 +106,80 @@ export function showTodoDetails(todo, onEdit, onDelete) {
   document.getElementById("delete-todo").onclick = onDelete;
   document.getElementById("close-todo-detail").onclick = hideModals;
 }
+
+export function showProjectModal(mode, index, onSave) {
+  const form = document.getElementById("project-form");
+  const input = form.querySelector('input[name="projectName"]');
+  const title = form.querySelector("h3");
+
+  title.textContent = mode === "add" ? "Add Project" : "Edit Project";
+  input.value = mode === "edit" ? projects[index].name : "";
+
+  showModal(projectModal);
+
+  form.onsubmit = (e) => {
+    e.preventDefault();
+    const name = input.value.trim();
+    if (name) {
+      const project = mode === "edit" ? projects[index] : new Project(name);
+      if (mode === "edit") project.name = name;
+      onSave(project);
+      hideModals();
+    }
+  };
+
+  form.querySelector(".cancel").onclick = hideModals;
+}
+
+export function showTodoModal(mode, todoIndex, projectIndex, onSave) {
+  const form = document.getElementById("todo-form");
+  const titleInput = form.querySelector('input[name="title"]');
+  const descInput = form.querySelector('textarea[name="description"]');
+  const dueInput = form.querySelector('input[name="dueDate"]');
+  const prioritySelect = form.querySelector('select[name="priority"]');
+  const title = form.querySelector("h3");
+
+  title.textContent = mode === "add" ? "Add Todo" : "Edit Todo";
+
+  if (mode === "edit") {
+    const todo = projects[projectIndex].getTodos()[todoIndex];
+    titleInput.value = todo.title;
+    descInput.value = todo.description || "";
+    dueInput.value = todo.dueDate || "";
+    prioritySelect.value = todo.priority
+      ? todo.priority.charAt(0).toUpperCase() + todo.priority.slice(1)
+      : "Low";
+  } else {
+    titleInput.value = "";
+    descInput.value = "";
+    dueInput.value = "";
+    prioritySelect.value = "Low";
+  }
+
+  showModal(todoModal);
+
+  form.onsubmit = (e) => {
+    e.preventDefault();
+    const title = titleInput.value.trim();
+    if (title) {
+      const desc = descInput.value.trim();
+      const due = dueInput.value;
+      const priority = prioritySelect.value.toLowerCase();
+      const todo = mode === "edit"
+        ? projects[projectIndex].getTodos()[todoIndex]
+        : new Todo(title, desc, due, priority, false);
+
+      if (mode === "edit") {
+        todo.title = title;
+        todo.description = desc;
+        todo.dueDate = due;
+        todo.priority = priority;
+      }
+
+      onSave(todo);
+      hideModals();
+    }
+  };
+
+  form.querySelector(".cancel").onclick = hideModals;
+}
