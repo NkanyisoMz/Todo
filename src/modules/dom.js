@@ -10,28 +10,33 @@ export function renderProjects(projects, onSelect, onEdit, onDelete) {
     btn.dataset.index = index;
     btn.addEventListener("click", () => onSelect(index));
 
+    const actionsDiv = document.createElement("div");
+    actionsDiv.classList.add("actions");
+
     const editBtn = document.createElement("button");
-    editBtn.textContent = "✏️";
+    editBtn.textContent = "Edit";
+    editBtn.classList.add("edit-btn");
     editBtn.addEventListener("click", (e) => {
       e.stopPropagation();
       onEdit(index);
     });
 
     const deleteBtn = document.createElement("button");
-    deleteBtn.textContent = "🗑️";
+    deleteBtn.textContent = "Delete";
+    deleteBtn.classList.add("delete-btn");
     deleteBtn.addEventListener("click", (e) => {
       e.stopPropagation();
       onDelete(index);
     });
 
-    li.appendChild(btn);
-    li.appendChild(editBtn);
-    li.appendChild(deleteBtn);
+    actionsDiv.appendChild(editBtn);
+    actionsDiv.appendChild(deleteBtn);
 
+    li.appendChild(btn);
+    li.appendChild(actionsDiv);
     projectList.appendChild(li);
   });
 }
-
 export function renderTodos(project, onSelect, onEdit, onDelete) {
   const todoList = document.getElementById("todo-list");
   todoList.innerHTML = "";
